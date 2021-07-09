@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.txt": "plaintext",
+        "ip.h": "c",
+        "udp.h": "c",
+        "in.h": "c",
+        "inttypes.h": "c",
+        "inet.h": "c",
+        "socket.h": "c",
+        "stdlib.h": "c",
+        "features.h": "c"
+    }
+}
