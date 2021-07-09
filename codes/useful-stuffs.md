@@ -73,7 +73,7 @@ nmap -sP netwrokIp/maskLen
 
 ## Kernel helps a lot!!
 
-
+```
               ┌───────────────────────────────────────────────────┐
               │IP Header fields modified on sending by IP_HDRINCL │
               ├──────────────────────┬────────────────────────────┤
@@ -85,11 +85,13 @@ nmap -sP netwrokIp/maskLen
               ├──────────────────────┼────────────────────────────┤
               │Total Length          │ Always filled in           │
               └──────────────────────┴────────────────────────────┘
+```
 
 ## DNS Request
 
 Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
 
+```
 (RFC1035)
 
 +---------------------+
@@ -104,9 +106,11 @@ Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
 | Additional          | RRs holding additional information
 +---------------------+
 
+```
 
 ### DNS Header
 
+```
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |                     ID                        |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
@@ -120,10 +124,11 @@ Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |                   ARCOUNT                     |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-
+```
 
 ### DNS Query
 
+```
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |                                               |
 /                    QNAME                      /
@@ -133,10 +138,11 @@ Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |                    QCLASS                     |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-
+```
 
 ## QNAME field
 
+```
   /* Example:
      +---+---+---+---+---+---+---+---+---+---+---+
      | a | b | c | . | d | e | . | c | o | m | \0|
@@ -148,3 +154,4 @@ Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
      +---+---+---+---+---+---+---+---+---+---+---+---+
    */
 
+```
