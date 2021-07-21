@@ -12,7 +12,7 @@
 
 
 
-const int BUFFER_LEN = 1024 * 8;
+const int BUFFER_LEN = 1024;
 const char* DNS_SERVER = "192.168.0.104";
 char* DOMAIN_NAME = "biis.buet.ac.bd";
 const int DNS_PORT = 53;
@@ -124,6 +124,8 @@ int main() {
     int yes = 1, pkt_sent = 0;
     size_t pos = 0;
 
+    memset(buffer, 0, sizeof(buffer));
+
     struct iphdr *ip = (struct iphdr *) (buffer + pos);
     pos += sizeof(struct iphdr);
 
@@ -132,6 +134,8 @@ int main() {
 
     struct dns_header *dns_h = (struct dns_header *) (buffer + pos);
     pos += sizeof(struct dns_header);
+
+    printf("%d %d %d\n", sizeof(struct iphdr), sizeof(struct udphdr), sizeof(struct dns_header));
 
 
     int sd = socket(PF_INET, SOCK_RAW, IPPROTO_UDP);
@@ -147,8 +151,6 @@ int main() {
     }
 	else printf("setsockopt(): ok\n");
 
-
-    memset(buffer, 0, sizeof(buffer));
 
     fill_ip(ip);
     fill_dns_header(dns_h);
