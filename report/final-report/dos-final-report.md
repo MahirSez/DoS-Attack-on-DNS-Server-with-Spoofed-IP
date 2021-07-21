@@ -59,7 +59,7 @@ Here,
 
 The basic structure of our payload would be as follows: 
 
-![](/media/mahir/New Volume/The-Prestige-4-1/Computer-Security-Sessional-cse-406/dos-attack-project/report/final-report/Payload Buffer.svg)
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/66234c1bb6b80ddc2d3337e671ffbea3fac6fc1d/report/final-report/Payload%20Buffer.svg?token=AHYCPXMVFVG3UZ3KSEKAGG3A67UO4" style="zoom:80%;/>
 
 We first take a buffer of size 1024 bytes and allocate space for the IP header, UDP header and the DNS header:
 
@@ -83,3 +83,4 @@ pos += sizeof(struct dns_header);
 ```
 
 As the DNS question would have variable length depending on the 
+
