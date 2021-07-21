@@ -40,7 +40,7 @@ Here,
 
     
 
-Next we tell the kernel that the IP header would be included in the payload by calling: 
+Next, we tell the kernel that the IP header would be included in the payload by calling: 
 
 ```c
 int yes = 1,
@@ -59,7 +59,7 @@ Here,
 
 The basic structure of our payload would be as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/66234c1bb6b80ddc2d3337e671ffbea3fac6fc1d/report/final-report/Payload%20Buffer.svg?token=AHYCPXMVFVG3UZ3KSEKAGG3A67UO4" style="zoom:80%;/>
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/66234c1bb6b80ddc2d3337e671ffbea3fac6fc1d/report/final-report/Payload%20Buffer.svg?token=AHYCPXMVFVG3UZ3KSEKAGG3A67UO4"/>
 
 We first take a buffer of size 1024 bytes and allocate space for the IP header, UDP header and the DNS header:
 
@@ -82,5 +82,11 @@ pos += sizeof(struct dns_header);
 
 ```
 
-As the DNS question would have variable length depending on the 
+As the DNS question would have variable length depending on the queried domain name, we cannot allocate space for that before setting the question.
+
+
+
+### 2.4. Filling the IP Header
+
+
 
