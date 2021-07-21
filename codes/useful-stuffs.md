@@ -18,7 +18,7 @@ https://stackoverflow.com/questions/824295/what-does-c-struct-syntax-a-b-mean/49
 
 ## Little-endian vs Big-endian
 
-ittle-endian is when the least significant bytes are stored before the more significant bytes, and big-endian is when the most significant bytes are stored before the less significant bytes.
+Little-endian is when the least significant bytes are stored before the more significant bytes, and big-endian is when the most significant bytes are stored before the less significant bytes.
 
 
 ## IP header
@@ -140,7 +140,7 @@ Ref - https://www.binarytides.com/dns-query-code-in-c-with-winsock/
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 ```
 
-## QNAME field
+### QNAME field
 
 ```
   /* Example:

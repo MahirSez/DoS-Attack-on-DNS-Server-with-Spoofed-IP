@@ -17,7 +17,7 @@ const char* DNS_SERVER = "192.168.0.104";
 char* DOMAIN_NAME = "biis.buet.ac.bd";
 const int DNS_PORT = 53;
 
-const int N = 1e6;
+const int N = 1e9;
 
 struct dns_header {
   uint16_t xid;
