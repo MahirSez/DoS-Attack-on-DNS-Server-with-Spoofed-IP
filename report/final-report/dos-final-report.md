@@ -88,7 +88,7 @@ As the DNS question would have variable length depending on the queried domain n
 
 We now populate the IP header of our packet. The format of the IP header is as follows: 
 
-<img src="/media/mahir/New Volume/The-Prestige-4-1/Computer-Security-Sessional-cse-406/dos-attack-project/report/final-report/ip-header.svg" style="zoom: 80%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/ip-header.svg?token=AHYCPXO2L6OFAKL42NZO36TA7AVZ6" style="zoom: 80%;" />
 
 Fortunately, we did not need to define our own structure for the IP header. Instead, we used the IP header provided with the ` linux/ip.h` library:
 
@@ -113,7 +113,7 @@ Notice that, we did not set the **Total Length** and **Header Checksum** field i
 
 The structure of the UDP header is as follows: 
 
-<img src="/media/mahir/New Volume/The-Prestige-4-1/Computer-Security-Sessional-cse-406/dos-attack-project/report/final-report/UDP header.svg" style="zoom: 67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/UDP%20header.svg?token=AHYCPXKMBZAMCATQELX2OG3A7AV6W" style="zoom: 67%;" />
 
 We used the UDP header structure provided with the `linux/udp.h` library to fill the UDP header:
 
@@ -133,7 +133,7 @@ Notice that, the `len` field requires the length of the **UDP header**, **DNS he
 
 The structure of the DNS header is as follows: 
 
-<img src="/media/mahir/New Volume/The-Prestige-4-1/Computer-Security-Sessional-cse-406/dos-attack-project/report/final-report/DNS header.svg" style="zoom: 70%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20header.svg?token=AHYCPXKMSRWF4IOVAMVGGYDA7AWA4" style="zoom: 70%;" />
 
 Unlike IP and UDP, we had to write our own structure for the DNS header:
 
@@ -167,7 +167,7 @@ void fill_dns_header(struct dns_header *dns_h) {
 
 The structure of the DNS question is as follows: 
 
-<img src="/media/mahir/New Volume/The-Prestige-4-1/Computer-Security-Sessional-cse-406/dos-attack-project/report/final-report/DNS question.svg" style="zoom:67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20question.svg?token=AHYCPXNXLGVG52D4V6FXTM3A7AWAU" style="zoom:67%;" />
 
 We define our DNS question structure as follows:
 
