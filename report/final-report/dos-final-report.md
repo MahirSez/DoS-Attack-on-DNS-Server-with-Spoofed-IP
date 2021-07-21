@@ -59,7 +59,7 @@ Here,
 
 The basic structure of our payload would be as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/66234c1bb6b80ddc2d3337e671ffbea3fac6fc1d/report/final-report/Payload%20Buffer.svg?token=AHYCPXMVFVG3UZ3KSEKAGG3A67UO4"/>
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/4bf20c72d73d05a911052d0e1336821f9ed12ef4/report/final-report/Payload%20Buffer.svg?token=AHYCPXKSFZ7RK2LCPIS2O6LA67VXG"/>
 
 We first take a buffer of size 1024 bytes and allocate space for the IP header, UDP header and the DNS header:
 
