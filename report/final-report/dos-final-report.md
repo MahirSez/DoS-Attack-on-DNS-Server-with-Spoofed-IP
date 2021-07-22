@@ -6,7 +6,7 @@
 
 We used bind9 to use one VM as a DNS server. We run the command `service bind9 status` to check if the DNS server is working properly. The output is as follows:
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/bind9-status.png" style="zoom:67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/bind9-status.png" style="zoom: 80%;" />
 
 We set up another VM as our client. In order to make sure that all of our client's DNS requests go through `dns-server@192.168.0.105` we update the `/etc/resolv.conf` file in the client VM and change the address to `192.168.0.105`. Now, to check if the client is actually using `dns-server@192.168.0.105` as its DNS server we run `nslookup google.com` on the client machine and check the output:
 
@@ -292,7 +292,7 @@ Before initializing our attack, we performed the following checks to see everyth
 
 First we tested our socket connection. We sent a regular DNS request with our original IP address. The output of Wireshark in the `dns-server@192.168.0.105` is as follows:
 
-
+![](https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/without-spoof.png)
 
 So, we came to the conclusion that our socket connection was successfully working.
 
@@ -300,11 +300,29 @@ So, we came to the conclusion that our socket connection was successfully workin
 
 Next, we did the same check but with spoofed IP.  The output of Wireshark in the `dns-server@192.168.0.105` is as follows:
 
-
+![](https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/spoofed-ip.png)
 
 So, we can conclude that our IP spoofing has also been successful.
 
 ### 4.3. Performing DoS with Spoofed IP
 
-Finally, we combine everything above and perform DoS on the DNS server.
+Finally, we combine everything above and perform our final DoS attack on the DNS server. We send the DNS requests in a loop and each time before sending the request we spoof our IP. We put our attacking code in `attack.c` file in our host machine and run the command: 
 
+```bash
+$ gcc attack.c -o attack
+$ sudo ./attack
+```
+
+Through Wireshark we now observe a flood of of requests accumulated at the DNS server:
+
+<image>
+
+One thing to notice here is that because of IP spoofing all of the source IP-s are different and it is now impossible to detect the attacker's source IP and block it. 
+
+Now, if we perform an `nslookup ` from the client machine during the attack we get **connection timed out** indicating that the client is not getting the DNS service:
+
+<image>
+
+Even if we check from the browser of our client, we observe the same situation. The web-page does not load until we halt our attack.
+
+Thus, we come to the conclusion that our attack to the DNS server went perfectly.
