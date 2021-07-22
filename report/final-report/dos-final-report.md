@@ -315,14 +315,23 @@ $ sudo ./attack
 
 Through Wireshark we now observe a flood of of requests accumulated at the DNS server:
 
-<image>
+![](https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/wireshark-attack-snapshot.png)
 
 One thing to notice here is that because of IP spoofing all of the source IP-s are different and it is now impossible to detect the attacker's source IP and block it. 
 
 Now, if we perform an `nslookup ` from the client machine during the attack we get **connection timed out** indicating that the client is not getting the DNS service:
 
-<image>
+![](https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/client-connection-timed-out.png)
 
 Even if we check from the browser of our client, we observe the same situation. The web-page does not load until we halt our attack.
 
-Thus, we come to the conclusion that our attack to the DNS server went perfectly.
+Thus, we come to the conclusion that our attack to the DNS server was successful.
+
+
+
+## 5. Attack Statistics
+
+1.  On our attack, we managed to generate and send approximate $1.5 \cdot 10^5$  DNS requests per second to the server. This was actually enough to flood the server and block subsequent requests from other clients.
+2.  We tried to lower the request frequency to $2 \cdot 10^4$ pkt/s, $7\cdot10^4$ pkt/s  to check whether our attack still works. Unfortunately, even at a request generation of $7\cdot10^4$ pkt/s the DNS server could serve the client's DNS request. 
+3.  One possible variation of our attack might be to request different domain names every time so that the server can not cache the result. This requires ether generating a domain name every time we send a request or saving a large number of domain name in our local storage / database.
+4.  If we decide to generate low frequency of requests from a single machine then another possible solution might be to use multiple VMs and perform the attack simultaneously on a single DNS server. By doing so, we can achieve a DNS request frequency of around $1\cdot10^6$ pkt/s.
