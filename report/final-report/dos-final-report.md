@@ -6,17 +6,17 @@
 
 We used bind9 to use one VM as a DNS server. We run the command `service bind9 status` to check if the DNS server is working properly. The output is as follows:
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/bind9-status.png?token=AHYCPXNIXJ6GZWXBYMIQJWLBAEKC2" style="zoom:67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/bind9-status.png" style="zoom:67%;" />
 
-We set up another VM as our client. In order to make sure that all of our client's DNS requests go through `DNS@192.168.0.105` we update the `/etc/resolv.conf` file in the client VM and change the address to `192.168.0.105`. Now, to check if the client is actually using `DNS@192.168.0.105` as its DNS server we run `nslookup google.com` on the client machine and check the output:
+We set up another VM as our client. In order to make sure that all of our client's DNS requests go through `dns-server@192.168.0.105` we update the `/etc/resolv.conf` file in the client VM and change the address to `192.168.0.105`. Now, to check if the client is actually using `dns-server@192.168.0.105` as its DNS server we run `nslookup google.com` on the client machine and check the output:
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/client-nslookup.png?token=AHYCPXNXIOZIEYJUHWESPWDBAEKBO" style="zoom: 80%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/main/report/final-report/client-nslookup.png" style="zoom: 80%;" />
 
 
 
 ## 2. Using Socket to Send DNS Requests from the Attacker
 
-Now, our primary target is to send an enormous amount of DNS requests to `DNS@192.168.0.105` from the attacker programmatically. We also need to spoof our IP address to hide our identity. We use raw socket to accomplish this. Raw sockets are very powerful in the sense that it gives the power to specify network level details such as source IP, destination IP etc.
+Now, our primary target is to send an enormous amount of DNS request to `dns-server@192.168.0.105` from the attacker programmatically. We also need to spoof our IP address to hide our identity. We use raw socket to accomplish this. Raw sockets are very powerful in the sense that it gives the power to specify network level details such as source IP, destination IP etc.
 
 ### 2.1. Why Raw Socket?
 
@@ -57,7 +57,7 @@ Here,
 
 The basic structure of our payload would be as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/32f516e7350429e48cec0edd70d8c00abe6c7997/report/final-report/Payload%20Buffer-bg-white.svg?token=AHYCPXO3GJZPSSHCEHCVQ5TA67WD4"/>
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/1dbe51bb5d540a49ff155fdf81810ea26c16d3ab/report/final-report/Payload%20Buffer-bg-white.svg"/>
 
 We first take a buffer of size 1024 bytes and allocate space for the IP header, UDP header and the DNS header:
 
@@ -88,7 +88,7 @@ As the DNS question would have variable length depending on the queried domain n
 
 We now populate the IP header of our packet. The format of the IP header is as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/ip-header.svg?token=AHYCPXO2L6OFAKL42NZO36TA7AVZ6" style="zoom: 80%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/ip-header.svg" style="zoom: 80%;" />
 
 Fortunately, we did not need to define our own structure for the IP header. Instead, we used the IP header provided with the ` linux/ip.h` library:
 
@@ -113,7 +113,7 @@ Notice that, we did not set the **Total Length** and **Header Checksum** field i
 
 The structure of the UDP header is as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/UDP%20header.svg?token=AHYCPXKMBZAMCATQELX2OG3A7AV6W" style="zoom: 67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/UDP%20header.svg" style="zoom: 67%;" />
 
 We used the UDP header structure provided with the `linux/udp.h` library to fill the UDP header:
 
@@ -133,7 +133,7 @@ Notice that, the `len` field requires the length of the **UDP header**, **DNS he
 
 The structure of the DNS header is as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20header.svg?token=AHYCPXKMSRWF4IOVAMVGGYDA7AWA4" style="zoom: 70%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20header.svg" style="zoom: 70%;" />
 
 Unlike IP and UDP, we had to write our own structure for the DNS header:
 
@@ -167,7 +167,7 @@ void fill_dns_header(struct dns_header *dns_h) {
 
 The structure of the DNS question is as follows: 
 
-<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20question.svg?token=AHYCPXNXLGVG52D4V6FXTM3A7AWAU" style="zoom:67%;" />
+<img src="https://raw.githubusercontent.com/MahirSez/DoS-Attack-on-DNS-Server-with-Spoofed-IP/b6445780f41b92615f0c00a642e4ae972626c6b8/report/final-report/DNS%20question.svg" style="zoom:67%;" />
 
 We define our DNS question structure as follows:
 
@@ -184,9 +184,7 @@ struct dns_question {
 The `QName` requires the following structure:
 
 ```
-A domain name is represented as a sequence of labels, where each label consists of a length
-octet followed by that number of octets. The domain name terminates with the zero length
-octet for the null label of the root.
+A domain name is represented as a sequence of labels, where each label consists of a length octet followed by that number of octets. The domain name terminates with the zero length octet for the null label of the root.
 ```
 
 For example, the domain **www.abcd.com** would become  **3www4abcd3com0**.
@@ -228,7 +226,7 @@ size_t fill_dns_question(char* buffer) {
     struct dns_question question;
     question.name = build_domain_qname(DOMAIN_NAME);
 	question.dnstype = htons(1);   // QTYPE A records
-	question.dnsclass = htons(1);  // QCLASS Internet Addresses
+	question.dnsclass = htons(1);  // QCLASS Internet Address
 
     memcpy(buffer, question.name, strlen(question.name) + 1);
     buffer += strlen(question.name) + 1 ;
@@ -286,5 +284,27 @@ void spoof_identity(struct iphdr *ip, struct dns_header *dns_h) {
 
 
 
-## 4. Testing Our Attack
+## 4. Testing the Attack
+
+Before initializing our attack, we performed the following checks to see everything was working smoothly:
+
+### 4.1. Sending Sample DNS Request Through Socket:
+
+First we tested our socket connection. We sent a regular DNS request with our original IP address. The output of Wireshark in the `dns-server@192.168.0.105` is as follows:
+
+
+
+So, we came to the conclusion that our socket connection was successfully working.
+
+### 4.2. Sending Sample DNS request with Spoofed IP:
+
+Next, we did the same check but with spoofed IP.  The output of Wireshark in the `dns-server@192.168.0.105` is as follows:
+
+
+
+So, we can conclude that our IP spoofing has also been successful.
+
+### 4.3. Performing DoS with Spoofed IP
+
+Finally, we combine everything above and perform DoS on the DNS server.
 

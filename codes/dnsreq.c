@@ -73,7 +73,7 @@ main (int argc, char *argv[])
   int socketfd = socket (AF_INET, SOCK_DGRAM, 0);
   struct sockaddr_in address;
   address.sin_family = AF_INET;
-  address.sin_addr.s_addr =  (inet_addr("192.168.0.104"));
+  address.sin_addr.s_addr =  (inet_addr("192.168.0.105"));
   // address.sin_addr.s_addr =  (inet_addr("192.168.0.104"));
   address.sin_port = htons (53);
 
